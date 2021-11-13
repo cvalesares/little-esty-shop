@@ -5,6 +5,9 @@ RSpec.describe "Merchant's dashboard", type: :feature do
     before(:each) do
       @merchant = Merchant.create(name: "Friendly Traveling Merchant")
 
+      @discount1 = @merchant.bulk_discounts.create!(discount: 15.00, quantity_threshold: 5)
+      @discount2 = @merchant.bulk_discounts.create!(discount: 20.00, quantity_threshold: 10)
+
       @item = @merchant.items.create(name: 'YoYo', description: 'its on a string')
 
       @customer_1 = Customer.create(first_name: 'George', last_name: 'Washington')
@@ -110,6 +113,13 @@ RSpec.describe "Merchant's dashboard", type: :feature do
       within ("div#items-ready-to-ship") do
         expect("#{@invoice_6.id}").to appear_before("#{@invoice_7.id}")
       end
+    end
+
+    it "should show all discounts as a link" do
+      visit "/merchants/#{@merchant.id}/dashboard"
+
+      click_link "My Discounts"
+      expect(current_path).to eq("/merchants/#{@merchant.id}/discounts")
     end
   end
 end
