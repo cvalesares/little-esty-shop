@@ -37,6 +37,8 @@ Rails.application.routes.draw do
   patch '/admin/invoices/:id', to: 'admin_invoices#update'
 
   get "/merchants/:merchant_id/discounts", to: "merchant_bulk_discounts#index"
+  get "/merchants/:merchant_id/discounts/new", to: "merchant_bulk_discounts#new"
+  post "/merchants/:merchant_id/discounts", to: "merchant_bulk_discounts#create"
   get "/merchants/:merchant_id/discounts/:discount_id", to: "merchant_bulk_discounts#show"
   # namespace :admin do
   #   resources :merchants, only: [:index]
