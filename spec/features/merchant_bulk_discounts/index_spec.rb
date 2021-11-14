@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Merchant Bulk Index' do
+RSpec.describe "Merchant Bulk Index" do
   before :each do
     @merchant1 = Merchant.create!(name: "Jimmy Pesto")
     @merchant2 = Merchant.create!(name: "Linda Belcher")
@@ -20,5 +20,12 @@ RSpec.describe 'Merchant Bulk Index' do
       click_link "Discount Details"
       expect(current_path).to eq("/merchants/#{@merchant1.id}/discounts/#{@discount1.id}")
     end
+  end
+
+  it "can create a new discount" do
+    visit "/merchants/#{@merchant1.id}/discounts"
+
+    click_link "Create New Discount"
+    expect(current_path).to eq("/merchants/#{@merchant1.id}/discounts/new")
   end
 end
