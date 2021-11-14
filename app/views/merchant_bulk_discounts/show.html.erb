@@ -1,4 +1,5 @@
 <h3> Discount #<%= @discount.id %></h3>
 
 Discount: <%= @discount.discount %>%<p>
-Quantity Threshold: <%= @discount.quantity_threshold %>
+Quantity Threshold: <%= @discount.quantity_threshold %><p>
+<%= link_to "Update Discount", "/merchants/#{@merchant.id}/discounts/#{@discount.id}/edit", method: :get %>
