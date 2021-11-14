@@ -40,6 +40,7 @@ Rails.application.routes.draw do
   get "/merchants/:merchant_id/discounts/new", to: "merchant_bulk_discounts#new"
   post "/merchants/:merchant_id/discounts", to: "merchant_bulk_discounts#create"
   get "/merchants/:merchant_id/discounts/:discount_id", to: "merchant_bulk_discounts#show"
+  delete "/merchants/:merchant_id/discounts/:discount_id", to: "merchant_bulk_discounts#destroy"
   # namespace :admin do
   #   resources :merchants, only: [:index]
   #   resources :invoices, only: [:index]
