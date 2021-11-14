@@ -13,7 +13,7 @@ RSpec.describe "create discount" do
     click_button("Create Bulk Discount")
 
     expect(current_path).to eq("/merchants/#{@merchant1.id}/discounts")
-    
+
     expect(page).to have_content("Discount: 25.0%")
   end
 end
