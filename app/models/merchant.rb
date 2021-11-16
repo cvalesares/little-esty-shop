@@ -90,4 +90,20 @@ class Merchant < ApplicationRecord
       .order('revenue')
       .last
   end
+
+  # def total_revenue
+  #   binding.pry
+  #   test = InvoiceItem.joins(:invoice)
+  #   result = 0
+  #   test.each do |invoice|
+  #     result += ((invoice.quantity * invoice.unit_price)/100)
+  #   end
+  #   result
+  # end
+  #
+  # def discounted_revenue
+  #   test = Invoice.joins(invoice_items: [item: [merchant: [:bulk_discounts]]])
+  #     .where(merchants:
+  #     )
+  # end
 end

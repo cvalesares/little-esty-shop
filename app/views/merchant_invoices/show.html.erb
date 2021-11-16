@@ -1,4 +1,4 @@
-<h1> Invoice #<%= @invoice.id %> </h1>
+<h1> Invoice ID: <%= @invoice.id %> </h1>
 
 <% @invoice.invoice_items.each do |invoice_item| %>
   <h3><%= Item.find(invoice_item.item_id).name %><br></h3>
@@ -13,13 +13,10 @@
   </div>
 <% end %>
 
-<h3>Total Revenue: <%= number_to_currency(@invoice.total_revenue / 100.0) %></h3>
-
-<h1>This is MerchantInvoice Show Page</h1>
-
-<h3>Invoice ID: <%= @invoice.id %> </h3><br>
 <h3>Invoice Status: <%= @invoice.status %> </h3><br>
-<h3>Created At: <%= @invoice.created_at.strftime("%A, %B %-d, %Y") %> </h3><br><br>
+<h3>Created At: <%= @invoice.created_at.strftime("%A, %B %-d, %Y") %> </h3>
+<h3>Customer: <%= @customer.first_name %> <%= @customer.last_name %></h3><br>
 
-<h3>Customer: <%= @customer.first_name %> <%= @customer.last_name %></h3>
 
+<h3>Total Revenue: <%= number_to_currency(@invoice.total_revenue) %></h3>
+<h3>Discounted Total Revenue: <%=number_to_currency(@invoice.total_revenue-(@invoice.total_revenue * @invoice_items.best_discount))%></h3>
