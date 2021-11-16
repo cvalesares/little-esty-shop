@@ -13,13 +13,18 @@ RSpec.describe "merchant's invoice show page", type: :feature do
       @invoice_1 = @customer.invoices.create(status: 2)
       @invoice_2 = @customer.invoices.create(status: 2)
 
-      @invoice_item_1 = @invoice_1.invoice_items.create(item_id: @item_1.id, quantity: 3, unit_price: 1000, status: 1)
-      @invoice_item_2 = @invoice_1.invoice_items.create(item_id: @item_2.id, quantity: 1, unit_price: 100, status: 1)
+      @invoice_item_1 = @invoice_1.invoice_items.create(item_id: @item_1.id, quantity: 20, unit_price: 1000, status: 1)
+      @invoice_item_2 = @invoice_1.invoice_items.create(item_id: @item_2.id, quantity: 25, unit_price: 100, status: 1)
+
+      @discount1 = @merchant.bulk_discounts.create!(discount: 10.00, quantity_threshold: 10)
+      @discount2 = @merchant.bulk_discounts.create!(discount: 15.00, quantity_threshold: 20)
+
 
       visit "/merchants/#{@merchant.id}/invoices/#{@invoice_1.id}"
     end
 
     it "I see invoice's id, status and created_at date" do
+      save_and_open_page
       expect(page).to have_content("Invoice ID: #{@invoice_1.id}")
       expect(page).to_not have_content("Invoice ID: #{@invoice_2.id}")
 
@@ -39,7 +44,7 @@ RSpec.describe "merchant's invoice show page", type: :feature do
     end
 
     it "displays total revenue for the invoice" do
-      expect(page).to have_content("Total Revenue: $31.00")
+      expect(page).to have_content("Total Revenue: $22,500.00")
     end
 
     it "I can update the invoice item's status" do
@@ -55,5 +60,20 @@ RSpec.describe "merchant's invoice show page", type: :feature do
         expect(page).to have_content "shipped"
       end
     end
+
+    it "shows the total revenue and discounted revenue" do
+      visit "/merchants/#{@merchant.id}/invoices/#{@invoice_1.id}"
+
+      expect(page).to have_content("Total Revenue: $22,500.00")
+      expect(page).to have_content("Discounted Total Revenue: $19,125.00")
+    end
   end
 end
+
+
+# Merchant Invoice Show Page: Total Revenue and Discounted Revenue
+#
+# As a merchant
+# When I visit my merchant invoice show page
+# Then I see the total revenue for my merchant from this invoice (not including discounts)
+# And I see the total discounted revenue for my merchant from this invoice which includes bulk discounts in the calculation
