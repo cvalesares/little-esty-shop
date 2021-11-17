@@ -19,15 +19,26 @@ WebMock.disable_net_connect!(allow_localhost: true)
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
   config.before(:each) do
-
     stub_request(:get, "https://date.nager.at/api/v3/NextPublicHolidays/US").
-      with(
-        headers: {
-          'Accept'=>'*/*',
-          'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
-          'User-Agent'=>'Faraday v1.8.0'
-          }).
-        to_return(status: 200, body: "", headers: {})
+         with(
+           headers: {
+       	  'Accept'=>'*/*',
+       	  'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3',
+       	  'User-Agent'=>'Faraday v1.8.0'
+           }).
+         to_return(status: 200, body:'{
+         "date": "2021-12-24",
+         "localName": "Christmas Day",
+         "name": "Christmas Day",
+         "countryCode": "US",
+         "fixed": false,
+         "global": true,
+         "counties": null,
+         "launchYear": null,
+         "types": [
+           "Public"
+         ]
+         }', headers: {})
 
     stub_request(:get, "https://api.github.com/repos/haewonito/little-esty-shop").
     with(
