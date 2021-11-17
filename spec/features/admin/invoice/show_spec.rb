@@ -4,13 +4,16 @@ RSpec.describe 'Admin Invoice Show page' do
   before do
     @customer = Customer.create!(first_name: 'Bob', last_name: 'Dylan')
     @merchant = Merchant.create!(name: 'Jen')
+    @merchant2 = Merchant.create!(name: 'Mark')
     @invoice = Invoice.create!(customer_id: @customer.id, status: 'completed')
     @item1 = Item.create!(name: 'Pumpkin', description: 'Orange', unit_price: 3, merchant_id: @merchant.id)
-    @item2 = Item.create!(name: 'Pillow', description: 'Soft', unit_price: 20, merchant_id: @merchant.id)
+    @item2 = Item.create!(name: 'Pillow', description: 'Soft', unit_price: 20, merchant_id: @merchant2.id)
     @invoice_item1 = InvoiceItem.create!(item_id: @item1.id, invoice_id: @invoice.id, quantity: 10, unit_price: 30, status: 'shipped')
     @invoice_item2 = InvoiceItem.create!(item_id: @item2.id, invoice_id: @invoice.id, quantity: 2, unit_price: 40, status: 'shipped')
+    @discount1 = @merchant.bulk_discounts.create!(discount: 10.00, quantity_threshold: 10)
+    @discount2 = @merchant.bulk_discounts.create!(discount: 15.00, quantity_threshold: 20)
 
-    visit admin_invoices_show_path(@invoice.id)
+    visit "/admin/invoices/#{@invoice.id}"
   end
   it 'All the items on the invoice are shown' do
     expect(page).to have_content('Items:')
@@ -45,13 +48,7 @@ RSpec.describe 'Admin Invoice Show page' do
   end
 
   describe 'as an admin' do
-    before :each do
-      @customer = Customer.create!(first_name: 'Taylor', last_name: 'Swift')
-      @invoice = @customer.invoices.create!(status: 'in progress')
-    end
-
     it 'displays information related to the invoice' do
-      visit "/admin/invoices/#{@invoice.id}"
 
       expect(page).to have_content @invoice.id
       expect(page).to have_content @invoice.status
@@ -59,10 +56,22 @@ RSpec.describe 'Admin Invoice Show page' do
     end
 
     it 'also displays the first and last name of the customer' do
-      visit "/admin/invoices/#{@invoice.id}"
 
       expect(page).to have_content @customer.first_name
       expect(page).to have_content @customer.last_name
     end
+
+    it "shows total and discounted revenue" do
+      save_and_open_page
+      expect(page).to have_content("Total Revenue: $380.00")
+      expect(page).to have_content("Total Discounted Revenue: $350.00")
+    end
   end
 end
+
+# Admin Invoice Show Page: Total Revenue and Discounted Revenue
+#
+# As an admin
+# When I visit an admin invoice show page
+# Then I see the total revenue from this invoice (not including discounts)
+# And I see the total discounted revenue from this invoice which includes bulk discounts in the calculation
