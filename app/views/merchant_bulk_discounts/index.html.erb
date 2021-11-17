@@ -1,5 +1,13 @@
 <h3> Bulk Discounts </h3>
 
+<div id="Holidays">
+<h4> Upcoming Holidays </h4>
+<% @holidays.holiday_information[0..2].each do |holiday| %>
+  <%= holiday.name %>:
+  <%= holiday.date %><p>
+<% end %>
+</div>
+
 <% @discounts.each do |discount| %>
 <div id="id-<%=discount.id%>">
   <h4>Discount #<%= discount.id %></h4><p>

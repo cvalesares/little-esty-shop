@@ -39,4 +39,12 @@ RSpec.describe "Merchant Bulk Index" do
     expect(current_path).to eq("/merchants/#{@merchant1.id}/discounts")
     expect(page).to_not have_content("Discount # #{@discount1.id}")
   end
+
+  it "shows the next 3 holidays" do
+    visit "/merchants/#{@merchant1.id}/discounts"
+
+    within "#Holidays" do
+      expect(page).to have_content("Thanksgiving Day: 2021-11-25")
+    end
+  end
 end
