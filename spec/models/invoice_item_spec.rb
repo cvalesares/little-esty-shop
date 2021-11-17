@@ -63,5 +63,21 @@ RSpec.describe InvoiceItem do
 
       expect(invoice_item_1.discounted_revenue).to eq(25.0)
     end
+
+    it "return no discounts if applicable discount doesn't exist" do
+      merchant = Merchant.create(name: "Bob's Burger")
+      item_1 = merchant.items.create(name: 'Burger', description: 'its on a string', unit_price: 1000)
+      item_2 = merchant.items.create(name: 'Shake', description: 'dried grape', unit_price: 100)
+      customer = Customer.create(first_name: 'Teddy', last_name: 'Lastname')
+      invoice_1 = customer.invoices.create(status: 2)
+      invoice_2 = customer.invoices.create(status: 2)
+      invoice_item_1 = invoice_1.invoice_items.create!(item_id: item_1.id, quantity: 50, unit_price: 1, status: 1)
+      invoice_item_2 = invoice_1.invoice_items.create!(item_id: item_2.id, quantity: 50, unit_price: 2, status: 1)
+      discount1 = merchant.bulk_discounts.create!(discount: 10.00, quantity_threshold: 100)
+      discount2 = merchant.bulk_discounts.create!(discount: 50.00, quantity_threshold: 150)
+
+      expect(invoice_item_1.discounted_revenue).to eq(50)
+      expect(invoice_item_2.discounted_revenue).to eq(100)
+    end
   end
 end
