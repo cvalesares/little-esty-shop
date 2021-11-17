@@ -20,4 +20,4 @@
 
 
 <h3>Total Revenue: <%= number_to_currency(@invoice.total_revenue) %></h3>
-<h3>Discounted Total Revenue: <%=number_to_currency(@invoice.total_revenue-(@invoice.total_revenue * @invoice_items.top_discount))%></h3>
+<h3>Discounted Total Revenue: <%=number_to_currency(@invoice.discounted_rev)%></h3>

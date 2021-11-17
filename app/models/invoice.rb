@@ -13,9 +13,9 @@ class Invoice < ApplicationRecord
     invoice_items.sum("unit_price * quantity")
   end
 
-  # def discounted_revenue
-  #   binding.pry
-  #   all_discounts = Merchant.bulk_discounts
-  #   joins(:invoice_items, :bulk_discounts).where("bulk_discounts.quantity_threshold <= ?", :quantity)
-  # end
+  def discounted_rev
+    invoice_items.map do |inv_item|
+      inv_item.discounted_revenue
+    end.sum
+  end
 end
