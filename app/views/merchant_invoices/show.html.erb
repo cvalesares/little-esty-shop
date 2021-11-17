@@ -1,10 +1,11 @@
 <h1> Invoice ID: <%= @invoice.id %> </h1>
 
 <% @invoice.invoice_items.each do |invoice_item| %>
-  <h3><%= Item.find(invoice_item.item_id).name %><br></h3>
+<div id="id-<%=invoice_item.id%>">
+  <h3><%= Item.find(invoice_item.item_id).name %></h3>
+  <%= link_to "Discount Details", "/merchants/#{@discount.merchant_id}/discounts/#{@discount.id}", method: :get %><br>
   Price: <%= Item.find(invoice_item.item_id).unit_price %><br>
   Quantity: <%= invoice_item.quantity %><br>
-  <div id="id-<%=invoice_item.id%>">
     <%= form_with url: "/merchants/#{@merchant.id}/invoices/#{@invoice.id}", method: :patch, local: true do |f| %>
       <%= f.label :status, "Status:" %>
       <%= f.select :status, ["packaged", "pending", "shipped"], selected:invoice_item.status %><br>
@@ -19,4 +20,4 @@
 
 
 <h3>Total Revenue: <%= number_to_currency(@invoice.total_revenue) %></h3>
-<h3>Discounted Total Revenue: <%=number_to_currency(@invoice.total_revenue-(@invoice.total_revenue * @invoice_items.best_discount))%></h3>
+<h3>Discounted Total Revenue: <%=number_to_currency(@invoice.total_revenue-(@invoice.total_revenue * @invoice_items.top_discount))%></h3>

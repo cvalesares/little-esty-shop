@@ -10,7 +10,7 @@ RSpec.describe do
 
   it "can edit a merchant's discount" do
     visit "/merchants/#{@merchant2.id}/discounts/#{@discount2.id}"
-    save_and_open_page
+  
     expect(page).to have_content("Quantity Threshold: 20")
 
     click_link "Update Discount"
