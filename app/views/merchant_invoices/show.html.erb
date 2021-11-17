@@ -3,7 +3,11 @@
 <% @invoice.invoice_items.each do |invoice_item| %>
 <div id="id-<%=invoice_item.id%>">
   <h3><%= Item.find(invoice_item.item_id).name %></h3>
-  <%= link_to "Discount Details", "/merchants/#{@discount.merchant_id}/discounts/#{@discount.id}", method: :get %><br>
+  <% if @discount.id != nil %>
+    <%= link_to "Discount Details", "/merchants/#{@discount.merchant_id}/discounts/#{@discount.id}", method: :get %><br>
+  <% else %>
+    No applicable discounts
+  <% end %>
   Price: <%= Item.find(invoice_item.item_id).unit_price %><br>
   Quantity: <%= invoice_item.quantity %><br>
     <%= form_with url: "/merchants/#{@merchant.id}/invoices/#{@invoice.id}", method: :patch, local: true do |f| %>
