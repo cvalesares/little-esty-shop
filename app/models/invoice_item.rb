@@ -26,7 +26,7 @@ class InvoiceItem < ApplicationRecord
     if top_discount.nil?
       unit_price * quantity
     else
-      test = (unit_price * quantity) - ((unit_price * quantity) * top_discount)
+      (unit_price * quantity) - ((unit_price * quantity) * top_discount)
     end
   end
 end
